@@ -1,4 +1,10 @@
 import "./message-component.css";
+import React from "react";
+import PropTypes from 'prop-types';
+
+MessageComponent.propTypes = {
+    text: PropTypes.string,
+}
 
 const MessageComponent = (props) => {
     return (

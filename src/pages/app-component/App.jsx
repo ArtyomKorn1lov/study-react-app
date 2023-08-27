@@ -1,5 +1,6 @@
 import './App.css';
 import MessageComponent from '../../components/message-component/message-component';
+import React from "react";
 
 const AppComponent = () => {
   const text = "Передаваемый пропсом текст";
