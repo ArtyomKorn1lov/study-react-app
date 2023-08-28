@@ -10,6 +10,6 @@ const MessageComponent = (props) => {
 
 MessageComponent.propTypes = {
     text: PropTypes.string,
-}
+};
 
 export default MessageComponent;
