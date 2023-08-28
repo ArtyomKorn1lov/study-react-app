@@ -8,8 +8,10 @@
       "ecmaVersion": 12,
       "sourceType": "module",
       "ecmaFeatures": {
-        "jsx": true
+        "jsx": true,
+        "scss": true
       }
     },
-    "plugins": ["react", "react-hooks"]
+    "plugins": ["react", "react-hooks"],
+    "ignorePatterns": ["../node_modules/*", "../build/*"]
 }  
