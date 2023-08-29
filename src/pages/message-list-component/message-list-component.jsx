@@ -1,12 +1,23 @@
 import "./message-list-component.scss";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import MessageModel from "../../models/MessageModel.jsx";
 
 const MessageListComponent = () => {
+    const author = "Артём";
     const [messageList, setMessageList] = useState([]);
     const [message, setMessage] = useState(new MessageModel("", ""));
     const [currentIndex, setIndex] = useState(-1);
+
+    //Поведение робота
+    useEffect(() => {
+        if (messageList.length <= 0 || messageList[messageList.length - 1].author !== author) {
+            return;
+        }
+        setTimeout(() => {
+            alert("Изменение состояния messageList");
+        }, 1500)
+    }, [messageList])
 
     const addAuthor = () => {
         if (message.text.trim("") === "" || message.author.trim("") === "") {
