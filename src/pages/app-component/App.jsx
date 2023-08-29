@@ -7,6 +7,7 @@ import MessageListComponent from '../message-list-component/message-list-compone
 const AppComponent = () => {
   const text = "Передаваемый пропсом текст";
 
+
   return (
     <div className="app">
       <header className="app__header">
