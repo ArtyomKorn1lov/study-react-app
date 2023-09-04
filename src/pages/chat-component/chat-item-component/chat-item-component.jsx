@@ -12,14 +12,14 @@ import Typography from '@mui/material/Typography';
 const ChatItemComponent = ({ chatItem, profile, editItem }) => {
 
     let align = "left";
-    if (chatItem.author === profile) {
+    if (chatItem.userId === profile) {
          align = "right";
     }
     return (
         <ListItem onClick={editItem} sx={{ cursor: "pointer", textAlign: align }}>
             <ListItemAvatar>
                 <Avatar>
-                    {chatItem.author === "Артём" ? (<FaceIcon />) : (<Face3Icon />)}
+                    {chatItem.author === "Саша" ? (<Face3Icon />) : (<FaceIcon />)}
                 </Avatar>
             </ListItemAvatar>
             <ListItemText
@@ -45,11 +45,13 @@ const ChatItemComponent = ({ chatItem, profile, editItem }) => {
 
 ChatItemComponent.propTypes = {
     chatItem: PropTypes.shape({
+        id: PropTypes.number,
         text: PropTypes.string,
         author: PropTypes.string,
-        date: PropTypes.object
+        date: PropTypes.object,
+        userId: PropTypes.number
     }),
-    profile: PropTypes.element.string,
+    profile: PropTypes.element.number,
     editItem: PropTypes.func
 }
 
