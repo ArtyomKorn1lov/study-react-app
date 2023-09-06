@@ -22,34 +22,38 @@ const apiUrl = "http://localhost:3001/";
 
 const ChatComponent = () => {
     const [isFocus, setFocus] = useState(false);
-    const [curMessage, setCurMessage] = useState(new MessageModelChat(0, "", "Артём", new Date().toLocaleDateString() + ", " + new Date().toLocaleTimeString().slice(0, -3), 0));
+    const [curMessage, setCurMessage] = useState(new MessageModelChat(0, "", "Артём", new Date().toLocaleDateString() + ", " + new Date().toLocaleTimeString().slice(0, -3), 1));
     const [messages, setMessages] = useState([]);
     const [currentIndex, setCurIndex] = useState(-1);
     const [users, setUsers] = useState([]);
 
     useEffect(() => {
-        axios.get(apiUrl + "api/messages/all")
+        getDataFromServer();
+    }, []);
+
+    const getDataFromServer = async () => {
+        await axios.get(apiUrl + "api/messages/all")
             .then((resp) => {
                 setMessages(ServerDataService.convertMessages(resp.data));
             })
             .catch((error) => {
                 console.log(error);
             });
-        axios.get(apiUrl + "api/users/all")
+        await axios.get(apiUrl + "api/users/all")
             .then((resp) => {
                 setUsers(ServerDataService.convertUsers(resp.data));
             })
             .catch((error) => {
                 console.log(error);
             });
-    }, []);
+    }
 
-    const addMessage = () => {
+    const addMessage = async () => {
         if (curMessage.text.trim("") === "" || curMessage.userId === undefined) {
             return;
         }
-        if (currentIndex >= 0 && messages[currentIndex] !== undefined && messages[currentIndex].userId === curMessage.userId) {
-            axios.post(apiUrl + 'api/messages/add', new MessageModelUpdate(messages[currentIndex].id, curMessage.text, messages[currentIndex].author, "Отредактировано в " + new Date().toLocaleDateString() + ", " + new Date().toLocaleTimeString().slice(0, -3)))
+        if (currentIndex >= 0 && messages[currentIndex] !== undefined && messages[currentIndex].userId === curMessage.userId && messages[currentIndex].id > 0) {
+            await axios.post(apiUrl + 'api/messages/update', new MessageModelUpdate(messages[currentIndex].id, curMessage.text))
                 .then((resp) => {
                     console.log(resp);
                 })
@@ -57,9 +61,10 @@ const ChatComponent = () => {
                     console.log(error);
                 });
             cancelEdit();
+            await getDataFromServer();
             return;
         }
-        axios.post(apiUrl + 'api/messages/add', new MessageModelCreate(curMessage.text, curMessage.author, new Date().toLocaleDateString() + ", " + new Date().toLocaleTimeString().slice(0, -3), curMessage.userId))
+        await axios.post(apiUrl + 'api/messages/add', new MessageModelCreate(curMessage.text, new Date().toLocaleDateString() + ", " + new Date().toLocaleTimeString().slice(0, -3), curMessage.userId))
             .then((resp) => {
                 console.log(resp);
             })
@@ -67,18 +72,19 @@ const ChatComponent = () => {
                 console.log(error);
             });
         cancelEdit();
+        await getDataFromServer();
     }
 
-    const removeMessage = () => {
-        if (currentIndex < 0) {
+    const removeMessage = async () => {
+        if (currentIndex < 0 || curMessage.id <= 0) {
             return;
         }
         let result = confirm("Вы уверены, что хотите удалить сообщение?");
         if (!result) {
             return;
         }
-        console.log(curMessage);
-        axios.post(apiUrl + 'api/messages/delete', { id: curMessage.id })
+
+        await axios.post(apiUrl + 'api/messages/delete', { id: curMessage.id })
             .then((resp) => {
                 console.log(resp);
             })
@@ -86,6 +92,7 @@ const ChatComponent = () => {
                 console.log(error);
             });
         cancelEdit();
+        await getDataFromServer();
     }
 
     const setToEdit = (index) => {
@@ -98,7 +105,7 @@ const ChatComponent = () => {
 
     const cancelEdit = () => {
         setCurIndex(-1);
-        setCurMessage(new MessageModelChat(0, "", curMessage.author, new Date().toLocaleDateString() + ", " + new Date().toLocaleTimeString().slice(0, -3), 0));
+        setCurMessage(new MessageModelChat(0, "", curMessage.author, new Date().toLocaleDateString() + ", " + new Date().toLocaleTimeString().slice(0, -3), curMessage.userId));
     }
 
     let labelMessageInput = "Введите сообщение";
@@ -143,12 +150,12 @@ const ChatComponent = () => {
                                 labelId="demo-simple-select-label"
                                 id="demo-simple-select"
                                 label="Автор сообщения"
-                                value={{ name: curMessage.author, id: curMessage.userId }} onChange={(event) => setCurMessage({ ...curMessage, author: event.target.value.name, userId: event.target.value.id })}
-                                defaultValue={{ name: curMessage.author, id: curMessage.userId }}
+                                value={curMessage.userId} onChange={(event) => setCurMessage({ ...curMessage, userId: event.target.value })}
+                                defaultValue={curMessage.userId}
                             >
                                 {
                                     users.map((element, index) => (
-                                        <MenuItem key={index} value={element}>{element.name === "Саша" ? (<Face3Icon />) : (<FaceIcon />)} {element.name}</MenuItem>
+                                        <MenuItem key={index} value={element.id}>{element.name === "Саша" ? (<Face3Icon />) : (<FaceIcon />)} {element.name}</MenuItem>
                                     ))
                                 }
                             </Select>

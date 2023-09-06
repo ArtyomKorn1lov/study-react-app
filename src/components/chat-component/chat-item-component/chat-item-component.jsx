@@ -15,6 +15,7 @@ const ChatItemComponent = ({ chatItem, profile, editItem }) => {
     if (chatItem.userId === profile) {
          align = "right";
     }
+    const dateMessage = chatItem.date.toLocaleDateString() + ", " + chatItem.date.toLocaleTimeString().slice(0, -3);
     return (
         <ListItem onClick={editItem} sx={{ cursor: "pointer", textAlign: align }}>
             <ListItemAvatar>
@@ -35,7 +36,7 @@ const ChatItemComponent = ({ chatItem, profile, editItem }) => {
                         >
                             {chatItem.text}
                         </Typography><br/>
-                        {chatItem.date}
+                        {dateMessage}
                     </React.Fragment>
                 }
             />

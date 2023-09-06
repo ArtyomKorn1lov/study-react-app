@@ -2,8 +2,8 @@ import './App.scss';
 import MessageComponent from '../../components/message-component/message-component';
 import React, { useEffect, useState } from "react";
 import { Routes, Route, Link } from 'react-router-dom';
-import MessageListComponent from '../message-list-component/message-list-component';
-import ChatComponent from '../chat-component/chat-component';
+import MessageListComponent from '../../components/message-list-component/message-list-component';
+import ChatPage from '../chat-page/chat-page';
 import { ThemeProvider, createTheme } from '@mui/material';
 
 const theme = createTheme({
@@ -12,7 +12,7 @@ const theme = createTheme({
   }
 });
 
-const AppComponent = () => {
+const AppPage = () => {
   const text = "Передаваемый пропсом текст";
   const [curUrl, setCurUrl] = useState("/");
   const [stateUrl, setStateUrl] = useState(false);
@@ -33,7 +33,7 @@ const AppComponent = () => {
           {curUrl === "/" && <MessageComponent text={text} />}
           <Routes>
             <Route path="/message-list/" element={<MessageListComponent />} />
-            <Route path="/chat/" element={<ChatComponent />} />
+            <Route path="/chat/" element={<ChatPage />} />
           </Routes>
         </header>
       </div>
@@ -41,4 +41,4 @@ const AppComponent = () => {
   );
 }
 
-export default AppComponent;
+export default AppPage;

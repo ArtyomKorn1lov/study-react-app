@@ -1,9 +1,6 @@
-import MessageModel from "./MessageModel";
-
-export default class MessageModelUpdate extends MessageModel {
-    constructor(id, text, author, date) {
-        super(text, author);
+export default class MessageModelUpdate {
+    constructor(id, text) {
         this.id = id;
-        this.date = date;
+        this.text = text;
     }
 }
