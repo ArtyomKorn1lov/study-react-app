@@ -1,7 +1,7 @@
 import "./message-list-component.scss";
 import React, { useEffect } from "react";
 import { useState } from "react";
-import MessageModel from "../../models/MessageModel.jsx";
+import MessageModel from "../../models/MessagesModels/MessageModel.jsx";
 
 const MessageListComponent = () => {
     const author = "Артём";

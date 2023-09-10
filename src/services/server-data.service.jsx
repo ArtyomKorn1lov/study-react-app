@@ -1,5 +1,5 @@
 import MessageModelChat from "../models/MessageModelChat";
-import UserModel from "../models/UserModel";
+import UserModel from "../models/MessagesModels/UserModel";
 
 const ServerDataService = {
     convertMessages: function(serverData) {
