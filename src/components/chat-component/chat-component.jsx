@@ -12,11 +12,11 @@ import Face3Icon from '@mui/icons-material/Face3';
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
 import ChatItemComponent from "./chat-item-component/chat-item-component";
-import MessageModelChat from "../../models/MessageModelChat";
-import MessageModelCreate from "../../models/MessageModelCreate";
+import MessageModelChat from "../../models/MessagesModels/MessageModelChat";
+import MessageModelCreate from "../../models/MessagesModels/MessageModelCreate";
 import axios from 'axios';
 import ServerDataService from "../../services/server-data.service";
-import MessageModelUpdate from "../../models/MessageModelUpdate";
+import MessageModelUpdate from "../../models/MessagesModels/MessageModelUpdate";
 
 const apiUrl = "http://localhost:3001/";
 

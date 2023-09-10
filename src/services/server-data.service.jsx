@@ -1,4 +1,4 @@
-import MessageModelChat from "../models/MessageModelChat";
+import MessageModelChat from "../models/MessagesModels/MessageModelChat";
 import UserModel from "../models/MessagesModels/UserModel";
 
 const ServerDataService = {
