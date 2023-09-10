@@ -3,16 +3,22 @@ import React from "react";
 import PropTypes from 'prop-types';
 import { Typography } from '@mui/material';
 
-const ChatItemComponent = ({message}) => {
+const ChatItemComponent = ({message, curUserId, editItem, index, curIndex}) => {
     let messageItemClass = styles.messages_item_left;
     let messageTextAlign = styles.message_left;
-    if (message.userId === 1) {
+    if (curIndex === index) {
+        messageTextAlign = styles.message_left_selected;
+    }
+    if (message.userId === curUserId) {
         messageItemClass = styles.messages_item_right;
         messageTextAlign = styles.message_right;
+        if (curIndex === index) {
+            messageTextAlign = styles.message_right_selected;
+        }
     }
     return (
         <div className={messageItemClass}>
-            <div className={messageTextAlign}>
+            <div className={messageTextAlign} onClick={editItem}>
                 <Typography
                     sx={{ display: 'inline', color: "white", textAlign: "start" }}
                     component="span"
@@ -40,7 +46,11 @@ ChatItemComponent.propTypes = {
         edited: PropTypes.object,
         userId: PropTypes.number,
         senderId: PropTypes.number
-    })
+    }),
+    curUserId: PropTypes.number,
+    editItem: PropTypes.func,
+    index: PropTypes.number,
+    curIndex: PropTypes.number
 }
 
 export default ChatItemComponent;

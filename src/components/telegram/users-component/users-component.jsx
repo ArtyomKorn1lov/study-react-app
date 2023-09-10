@@ -4,18 +4,19 @@ import List from '@mui/material/List';
 //import Divider from '@mui/material/Divider';
 import ChatComponent from "../chat-component/chat-component";
 import UserItemComponent from "../user-item-component/user-item-component";
+import PropTypes from 'prop-types';
 
-const UsersComponent = () => {
+const UsersComponent = ({curUserId}) => {
     const users = [
-        {
-            id: 1,
-            name: "Артём Корнилов",
-            lastMessage: "Привет!"
-        },
         {
             id: 2,
             name: "Александра Смышляева",
             lastMessage: "Как дела?"
+        },
+        {
+            id: 3,
+            name: "Антон Соколов",
+            lastMessage: "Привет!"
         },
     ]
 
@@ -31,9 +32,13 @@ const UsersComponent = () => {
                     {/* <Divider component="li" sx={{ borderColor: "white" }} /> */}
                 </List>
             </div>
-            <ChatComponent />
+            <ChatComponent curUserId={curUserId} />
         </div>
     );
+}
+
+UsersComponent.propTypes = {
+    curUserId: PropTypes.number
 }
 
 export default UsersComponent;

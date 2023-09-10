@@ -3,8 +3,11 @@ import React from "react";
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Typography } from '@mui/material';
 import UsersComponent from '../../components/telegram/users-component/users-component';
+import UserModel from "../../models/TelegramModels/UserModel";
 
 const TelegramPage = () => {
+    const curUser = new UserModel(1, "Артём Корнилов", "");
+
     return (
         <div className={styles.page}>
             <div className={styles.header}>
@@ -15,10 +18,10 @@ const TelegramPage = () => {
                     variant="body2"
                     color="white"
                 >
-                    Здравствуйте, пользователь!
+                    Здравствуйте, {curUser.name}!
                 </Typography>
             </div>
-            <UsersComponent />
+            <UsersComponent curUserId={curUser.id} />
         </div>
     )
 }
