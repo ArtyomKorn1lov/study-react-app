@@ -10,19 +10,21 @@ import MessageCreateModel from "../../../models/TelegramModels/MessageCreateMode
 import MessageUpdateModel from "../../../models/TelegramModels/MessageUpdateModel";
 import Button from '@mui/material/Button';
 import DeleteIcon from '@mui/icons-material/Delete';
+import { useParams } from "react-router-dom";
 
 const ChatComponent = ({ curUserId }) => {
+    const { senderId } = useParams();
     const [messages, setMessages] = useState([]);
     const [text, setText] = useState("");
     const [curIndex, setIndex] = useState(-1);
 
     useEffect(() => {
         getServerData();
-        // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [senderId]);
 
     const getServerData = async () => {
-        await axios.get(ServerDataService.apiUrl + "api/telegram/all/" + curUserId + "/" + 2 + "/")
+        await axios.get(ServerDataService.apiUrl + "api/telegram/all/" + curUserId + "/" + senderId + "/")
             .then((response) => {
                 setMessages(ServerDataService.convertTelegramMessages(response.data));
             })
@@ -58,7 +60,7 @@ const ChatComponent = ({ curUserId }) => {
             new MessageCreateModel(
                 text,
                 curUserId,
-                2
+                senderId
             ))
             .then((response) => {
                 console.log(response);

@@ -6,10 +6,13 @@ import Avatar from '@mui/material/Avatar';
 import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
+import { useNavigate } from "react-router-dom";
 
 const UserItemComponent = ({userItem}) => {
+    const navigate = useNavigate();
+
     return (
-        <ListItem sx={{ cursor: "pointer" }}>
+        <ListItem onClick={() => navigate(`user/${userItem.id}`)} sx={{ cursor: "pointer" }}>
             <ListItemAvatar>
                 <Avatar>
                     <AccountCircleIcon />

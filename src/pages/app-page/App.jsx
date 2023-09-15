@@ -36,7 +36,7 @@ const AppPage = () => {
           <Routes>
             <Route path="/message-list/" element={<MessageListComponent />} />
             <Route path="/chat/" element={<ChatPage />} />
-            <Route path="/telegram/" element={<TelegramPage />} />
+            <Route path="/telegram/*" element={<TelegramPage />} />
           </Routes>
         </header>
       </div>

@@ -1,24 +1,31 @@
 import styles from "./users-component.module.scss";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import List from '@mui/material/List';
 //import Divider from '@mui/material/Divider';
 import ChatComponent from "../chat-component/chat-component";
 import UserItemComponent from "../user-item-component/user-item-component";
 import PropTypes from 'prop-types';
+import { Route, Routes } from "react-router-dom";
+import axios from "axios";
+import ServerDataService from "../../../services/server-data.service";
 
-const UsersComponent = ({curUserId}) => {
-    const users = [
-        {
-            id: 2,
-            name: "Александра Смышляева",
-            lastMessage: "Как дела?"
-        },
-        {
-            id: 3,
-            name: "Антон Соколов",
-            lastMessage: "Привет!"
-        },
-    ]
+const UsersComponent = ({ curUserId }) => {
+    const [users, setUsers] = useState([]);
+
+    useEffect(() => {
+        getServerData();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, []);
+
+    const getServerData = async () => {
+        await axios.get(ServerDataService.apiUrl + "api/telegram/getUsers/" + curUserId)
+        .then((response) => {
+            setUsers(ServerDataService.convertTelegramUsers(response.data));
+        })
+        .catch((error) => {
+            console.log(error);
+        });
+    };
 
     return (
         <div className={styles.body_chat}>
@@ -32,7 +39,14 @@ const UsersComponent = ({curUserId}) => {
                     {/* <Divider component="li" sx={{ borderColor: "white" }} /> */}
                 </List>
             </div>
-            <ChatComponent curUserId={curUserId} />
+            <Routes>
+                <Route path="user/:senderId" element={<ChatComponent curUserId={curUserId} />} />
+                <Route path="*" element={
+                    <div className={styles.messages}>
+                        <h1>Выберете чат</h1>
+                    </div>
+                } />
+            </Routes>
         </div>
     );
 }
