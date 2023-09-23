@@ -6,6 +6,7 @@ import MessageListComponent from '../../components/message-list-component/messag
 import ChatPage from '../chat-page/chat-page';
 import { ThemeProvider, createTheme } from '@mui/material';
 import TelegramPage from '../telegram-page/telegram-page';
+import { UserContextProvider } from '../../contexts/user-context';
 
 const theme = createTheme({
   multilineColor: {
@@ -33,11 +34,13 @@ const AppPage = () => {
             <Link onClick={() => setStateUrl(!stateUrl)} to="/telegram/">Урок 4</Link>
           </div>
           {curUrl === "/" && <MessageComponent text={text} />}
-          <Routes>
-            <Route path="/message-list/" element={<MessageListComponent />} />
-            <Route path="/chat/" element={<ChatPage />} />
-            <Route path="/telegram/*" element={<TelegramPage />} />
-          </Routes>
+          <UserContextProvider>
+            <Routes>
+              <Route path="/message-list/" element={<MessageListComponent />} />
+              <Route path="/chat/" element={<ChatPage />} />
+              <Route path="/telegram/*" element={<TelegramPage />} />
+            </Routes>
+          </UserContextProvider>
         </header>
       </div>
     </ThemeProvider>
