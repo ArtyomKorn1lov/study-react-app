@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import ListItem from '@mui/material/ListItem';
 import ListItemText from '@mui/material/ListItemText';
 import ListItemAvatar from '@mui/material/ListItemAvatar';
@@ -7,12 +7,18 @@ import AccountCircleIcon from '@mui/icons-material/AccountCircle';
 import { Typography } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useNavigate } from "react-router-dom";
+import { UserContext } from "../../../contexts/user-context";
 
 const UserItemComponent = ({userItem}) => {
+    const userContex = useContext(UserContext);
     const navigate = useNavigate();
 
+    let backgroundItem = "";
+    if (userContex.chatId == userItem.id) {
+        backgroundItem = "#1976d2";
+    }
     return (
-        <ListItem onClick={() => navigate(`user/${userItem.id}`)} sx={{ cursor: "pointer" }}>
+        <ListItem onClick={() => navigate(`user/${userItem.id}`)} sx={{ cursor: "pointer", background: backgroundItem }}>
             <ListItemAvatar>
                 <Avatar>
                     <AccountCircleIcon />
@@ -35,7 +41,7 @@ const UserItemComponent = ({userItem}) => {
             />
         </ListItem>
     )
-}
+};
 
 UserItemComponent.propTypes = {
     userItem: PropTypes.shape({
@@ -43,6 +49,6 @@ UserItemComponent.propTypes = {
         name: PropTypes.string,
         lastMessage: PropTypes.string
     })
-}
+};
 
 export default UserItemComponent;

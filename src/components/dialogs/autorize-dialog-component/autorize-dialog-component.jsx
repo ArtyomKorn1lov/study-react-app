@@ -40,7 +40,9 @@ const AutorizeDialogComponent = ({ onClose, open }) => {
                 localStorage.setItem("tokenExpire", resp.data.tokenExpire);
             })
             .catch((error) => {
-                alert(error);
+                console.log(error);
+                alert(error.response.data.error);
+                setAuth(new AuthorizeModel("", ""));
                 return;
             });
         await userContext.getUserData();

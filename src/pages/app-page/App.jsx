@@ -28,10 +28,10 @@ const AppPage = () => {
       <div className="app">
         <header className="app__header">
           <div className='app__menu'>
-            <Link onClick={() => setStateUrl(!stateUrl)} to="/">На главную (Урок 1)</Link>
-            <Link onClick={() => setStateUrl(!stateUrl)} to="/message-list/">Урок 2</Link>
-            <Link onClick={() => setStateUrl(!stateUrl)} to="/chat/">Урок 3</Link>
-            <Link onClick={() => setStateUrl(!stateUrl)} to="/telegram/">Урок 4</Link>
+            <Link onClick={() => setStateUrl(!stateUrl)} to="/">На главную</Link>
+            <Link onClick={() => setStateUrl(!stateUrl)} to="/message-list/">CRUD операции</Link>
+            <Link onClick={() => setStateUrl(!stateUrl)} to="/chat/">Выбор прользователя и обмен с базой</Link>
+            <Link onClick={() => setStateUrl(!stateUrl)} to="/telegram/">Имитация telegram</Link>
           </div>
           {curUrl === "/" && <MessageComponent text={text} />}
           <UserContextProvider>

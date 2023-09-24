@@ -38,9 +38,9 @@ const ServerDataService = {
         return new UserModelTelegram(
             data.Id,
             data.Login,
-            "Пользователь телеграма"
+            data.Name
         )
     }
-}
+};
 
 export default ServerDataService;

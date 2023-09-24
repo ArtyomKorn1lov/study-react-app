@@ -5,8 +5,9 @@ import ServerDataService from "../services/server-data.service";
 
 export const UserContext = createContext();
 
-export const UserContextProvider = ({children}) => {
+export const UserContextProvider = ({ children }) => {
     const [user, setUser] = useState({});
+    const [chatId, setChatId] = useState(0);
 
     const userSetter = useCallback((userData) => {
         setUser(userData);
@@ -19,10 +20,7 @@ export const UserContextProvider = ({children}) => {
         }
         await axios.get(ServerDataService.apiUrl + "api/telegram/getUserData",
             {
-                headers: {
-                    login: localStorage.getItem("login"),
-                    token: localStorage.getItem("accessToken")
-                }
+                headers: getHeadAuthoriseData()
             })
             .then((resp) => {
                 userSetter({
@@ -34,12 +32,25 @@ export const UserContextProvider = ({children}) => {
             .catch((error) => {
                 console.log(error);
             });
-    // eslint-disable-next-line react-hooks/exhaustive-deps
+        // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
 
     const getAuthorizeData = useCallback(() => {
         return getHeadAuthoriseData();
     }, []);
+
+    const logOut = useCallback(() => {
+        localStorage.clear();
+        setUser({});
+    }, []);
+
+    const chatIdSetter = useCallback((id) => {
+        setChatId(id);
+    }, []);
+
+    const isVeryfyToken = useCallback(async () => {
+        return await veryfyToken();
+    }, [])
 
     const veryfyToken = async () => {
         const token = localStorage.getItem("accessToken");
@@ -51,34 +62,42 @@ export const UserContextProvider = ({children}) => {
         if (token && new Date(tokenExpire) > new Date()) {
             return true;
         }
-        await axios.post(ServerDataService.apiUrl + "api/telegram/refresh", getHeadAuthoriseData())
-        .then((resp) => {
-            console.log("success");
-            localStorage.setItem("accessToken", resp.data.accessToken);
-            localStorage.setItem("tokenExpire", resp.data.tokenExpire);
-        })
-        .catch((error) => {
-            console.log(error);
-            //localStorage.clear();
-            return false;
-        });
+        await axios.post(ServerDataService.apiUrl + "api/telegram/refresh",
+            {
+                login: localStorage.getItem("login"),
+                accessToken: localStorage.getItem("accessToken"),
+                refreshToken: localStorage.getItem("refreshToken"),
+            })
+            .then((resp) => {
+                console.log("success");
+                localStorage.setItem("accessToken", resp.data.accessToken);
+                localStorage.setItem("tokenExpire", resp.data.tokenExpire);
+            })
+            .catch((error) => {
+                console.log(error);
+                localStorage.clear();
+                return false;
+            });
         return true;
     };
 
     const getHeadAuthoriseData = () => {
         return {
             login: localStorage.getItem("login"),
-            accessToken: localStorage.getItem("accessToken"),
-            refreshToken: localStorage.getItem("refreshToken"),
+            token: localStorage.getItem("accessToken")
         };
     };
 
-    return(
+    return (
         <UserContext.Provider value={{
-            user, 
-            userSetter, 
-            getUserData, 
-            getAuthorizeData
+            user,
+            chatId,
+            userSetter,
+            getUserData,
+            getAuthorizeData,
+            logOut,
+            chatIdSetter,
+            isVeryfyToken
         }}>{children}</UserContext.Provider>
     );
 };
